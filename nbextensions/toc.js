@@ -17,13 +17,26 @@ toc.load_ipython_extension();
 define(["require", "jquery", "base/js/namespace"], function (require, $, IPython) {
   "use strict";
 
+  var rand = function() {
+	   return Math.random().toString(36).substr(2); // remove `0.`
+  };
+
   var make_link = function (h) {
+
     var a = $("<a/>");
-    a.attr("href", '#' + h.attr('id'));
+
+
     // get the text *excluding* the link text, whatever it may be
     var hclone = h.clone();
     hclone.children().remove();
     a.text(hclone.text());
+
+    var newID = hclone.text().toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-') + '_' + rand();
+
+
+    h.attr('id', newID);
+    a.attr("href", '#' + newID);
+
     return a;
   };
 
